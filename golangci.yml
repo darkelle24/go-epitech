@@ -1,0 +1,107 @@
+run:
+  timeout: "10m"
+  build-tags:
+    - integration
+linters:
+  disable-all: true
+  enable:
+    # level 0 : code format, should be covered by running gofumpt.
+    - "bidichk"
+    - "gofmt"
+    - "gofumpt"
+    - "goimports"
+    - "asciicheck"
+    - "depguard"
+    # level 1 : unused variable and variable miss usage.
+    - "exportloopref"
+    - "structcheck"
+    - "nakedret"
+    - "ineffassign"
+    - "unconvert"
+    - "unparam"
+    - "bodyclose"
+    - "gocritic"
+    - "govet"
+    - "varcheck"
+    # level 2 : previous step but more strict.
+    - "megacheck"
+    # level 3 : error handling.
+    - "errcheck"
+    - "goerr113"
+    - "wrapcheck"
+    - "errchkjson"
+    - "nolintlint"
+    - "errname"
+    # level 4 : code complexity.
+    - "maintidx"
+    - "gocognit"
+    - "gocyclo"
+    - "deadcode"
+    - "dupl"
+    # level 5 : documentation.
+    - "revive"
+    - "godot"
+    - "misspell"
+linters-settings:
+  depguard:
+    list-type: blacklist
+    include-go-root: true
+    packages-with-error-message:
+      - reflect: "shouldn't be used by most application"
+      - unsafe: "it's not safe"
+      - golang.org/x/net/context: "use context"
+  errcheck:
+    check-type-assertions: true
+    exclude-functions:
+      - (*os.File).Close # only fail when called twice
+      - (io.Closer).Close
+      - os.RemoveAll
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - opinionated
+      - experimental
+    disabled-checks:
+      - hugeParam
+      - whyNoLint
+      - paramTypeCombine
+  godot:
+    exclude:
+      - "^@*"
+  gocyclo:
+    min-complexity: 10
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+  wrapcheck:
+    # An array of strings that specify substrings of signatures to ignore.
+    # If this set, it will override the default set of ignored signatures.
+    # See https://github.com/tomarrell/wrapcheck#configuration for more information.
+    ignoreSigs:
+      - errors.New(
+      - errors.Unwrap(
+      - errors.Wrap(
+      - errors.Wrapf(
+      - errors.WithValue(
+      - .WithStack(
+    ignoreSigRegexps:
+      - \.New.*Error\(
+  nolintlint:
+    allow-unused: false
+    allow-leading-space: false
+    allow-no-explanation:
+      - errcheck
+      - misspell
+    require-explanation: true
+    require-specific: true
+issues:
+  exclude-rules:
+    - linters:
+        - paralleltest
+      text: "does not use range value in test Run" # map test cases are not supported by this linter
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
