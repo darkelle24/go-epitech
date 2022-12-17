@@ -1,5 +1,7 @@
 package game
 
+import "fmt"
+
 type TypeTool int
 
 const (
@@ -11,6 +13,7 @@ const (
 type Tool interface {
 	Get_name() string
 	Get_type() TypeTool
+	Get_position() (int, int)
 }
 
 type Weight interface {
@@ -21,7 +24,6 @@ type Weight interface {
 type Movable interface {
 	Move(int, int, [][]Floor)
 	Get_status() string
-	Get_position() (int, int)
 }
 
 type Waiter interface {
@@ -59,6 +61,8 @@ type Transpalette struct {
 type Colis struct {
 	name string
 	size int
+	x    int
+	y    int
 } //(tool, weight)
 
 type game_functions interface {
@@ -84,18 +88,32 @@ func (game *Game) Create_map(x, y int) {
 }
 
 func (game *Game) Create_transpallete(name string, x, y int) {
+	var trans Tool
+	trans = &Transpalette{name: name, x: x, y: y}
+	game.ToolsList = append(game.ToolsList, trans)
+	tile := Floor{Tool: trans}
+	game.Map[x][y] = tile
 }
 
 func (game *Game) Create_colis(name string, x, y, weight int) {
-
+	var pack Tool
+	pack = &Colis{name: name, x: x, y: y, size: weight}
+	game.ToolsList = append(game.ToolsList, pack)
+	tile := Floor{Tool: pack}
+	game.Map[x][y] = tile
 }
 
 func (game *Game) Create_camion(name string, x, y, max_weight, turn_max int) {
 	var truck Tool
 	truck = &Camion{name: name, x: x, y: y, poids_max: max_weight, turn_max: turn_max}
 	game.ToolsList = append(game.ToolsList, truck)
-	cell := Floor{Tool: truck}
-	game.Map[x][y] = cell
+	tile := Floor{Tool: truck}
+	game.Map[x][y] = tile
+}
+
+func (game *Game) Next_turn() {
+	game.Turn += 1
+	fmt.Println("Tour ", game.Turn)
 }
 
 // Camion methods
@@ -151,4 +169,50 @@ func (truck *Camion) Get_position() (int, int) {
 	return truck.x, truck.y
 }
 
-//
+// Transpalette methods
+
+func (trans *Transpalette) Move(int, int, [][]Floor) {
+	// update trans.X trans.Y to X Y and move floor tile at trans.X trans.Y to X Y
+}
+
+func (trans *Transpalette) Wait() {
+	trans.status = "WAIT"
+}
+
+func (trans *Transpalette) Get_name() string {
+	return trans.name
+}
+
+func (trans *Transpalette) Get_type() TypeTool {
+	return TRANSPALET
+}
+
+func (trans *Transpalette) Get_status() string {
+	return trans.status
+}
+
+func (trans *Transpalette) Get_position() (int, int) {
+	return trans.x, trans.y
+}
+
+// Colis methods
+
+func (pack *Colis) Get_name() string {
+	return pack.name
+}
+
+func (pack *Colis) Get_type() TypeTool {
+	return COLIS
+}
+
+func (pack *Colis) Get_position() (int, int) {
+	return pack.x, pack.y
+}
+
+func (pack *Colis) Get_current_weight() int {
+	return pack.size
+}
+
+func (pack *Colis) Get_max_weight() int {
+	return pack.size
+}
