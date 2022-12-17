@@ -66,20 +66,32 @@ type Colis struct {
 } //(tool, weight)
 
 type game_functions interface {
+	Set_turns(int)                            // x y
+	Get_turns(int) int                        // x y
 	Create_map(int, int)                      // x y
 	Create_transpallete(string, int, int)     // name, x, y
 	Create_colis(string, int, int, int)       // name, x, y, weight
 	Create_camion(string, int, int, int, int) // name, x, y, max_weight, turn_max
-	Next_turn()                               // apelle next_turn sur tout les waiter?
+	Next_turn()
 }
 
 type Game struct {
 	Map       [][]Floor
 	Turn      int
+	turns     int
 	ToolsList []Tool
 } //(game_functions)
 
 // Game methods
+
+func (game *Game) Set_turns(turns int) {
+	game.turns = turns
+}
+
+func (game *Game) Get_turns(turns int) int {
+	return game.turns
+}
+
 func (game *Game) Create_map(x, y int) {
 	game.Map = make([][]Floor, x)
 	for i := range game.Map {
@@ -112,6 +124,7 @@ func (game *Game) Create_camion(name string, x, y, max_weight, turn_max int) {
 }
 
 func (game *Game) Next_turn() {
+	// apelle next_turn sur tout les waiter?
 	game.Turn += 1
 	fmt.Println("Tour ", game.Turn)
 }
