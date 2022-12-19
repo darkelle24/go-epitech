@@ -27,6 +27,7 @@ func main() {
 	var floor = &gameEnv.Map
 	fmt.Println((*floor)[5][1].Tool)
 	gameEnv.Next_turn()
+	game.UpdateMap(&gameEnv)
 	s.Take(5, 2, floor)
 	s.Move(-1, 0, floor)
 	s.Move(-1, 0, floor)
@@ -35,7 +36,9 @@ func main() {
 	s.Drop(1, 1, floor)
 	fmt.Println(s, truck)
 	gameEnv.Next_turn()
+	game.UpdateMap(&gameEnv)
 	err := s.Move(-1, 0, floor)
 	fmt.Println(err)
 	gameEnv.Next_turn()
+	game.UpdateMap(&gameEnv)
 }
