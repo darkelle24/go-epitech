@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/darkelle24/go-epitech/game"
+	"github.com/darkelle24/go-epitech/parser"
 )
 
 func handlePanics() {
@@ -15,8 +16,14 @@ func handlePanics() {
 func main() {
 	defer handlePanics()
 	var gameEnv game.Game
-	fmt.Println(gameEnv)
-	gameEnv.Create_map(10, 10)
+	//fmt.Println(gameEnv)
+
+	if parser.Parser(&gameEnv) != nil {
+		return
+	}
+
+	// JUSTIN REMOVE QUAND T AS PLUS BESOIN DE L EXEMPLE
+	/* gameEnv.Create_map(10, 10)
 	gameEnv.Create_camion("test_camion", 1, 1, 1000, 5)
 	gameEnv.Create_colis("test_colis", 5, 2, 200)
 	gameEnv.Create_transpallete("test_transpallete", 5, 1)
@@ -40,5 +47,5 @@ func main() {
 	err := s.Move(-1, 0, floor)
 	fmt.Println(err)
 	gameEnv.Next_turn()
-	game.UpdateMap(&gameEnv)
+	game.UpdateMap(&gameEnv) */
 }
