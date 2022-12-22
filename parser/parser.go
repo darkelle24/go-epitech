@@ -16,6 +16,19 @@ func getPath() (string, error) {
 	return os.Args[1], nil
 }
 
+func readFile(path string) (string, error) {
+	data, err := os.ReadFile(path)
+
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	// Conversion des bytes en chaîne de caractères
+	str := string(data)
+	return str, nil
+}
+
 func Parser() error {
 
 	path, err := getPath()
@@ -24,17 +37,15 @@ func Parser() error {
 		return err
 	}
 
-	data, err := os.ReadFile(path)
+	file, err := readFile(path)
 
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
-	// Conversion des bytes en chaîne de caractères
-	str := string(data)
+	fmt.Println(file)
 
-	fmt.Println(str)
+	//fileArray := strings.Split(file, "\n")
 
 	return nil
 }
