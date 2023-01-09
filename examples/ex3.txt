@@ -1,0 +1,5 @@
+5 5 20
+colis__1 0 1 green
+colis__2 2 2 green
+transp_1 0 0
+air_repo 1 0 4000 5
