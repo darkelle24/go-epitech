@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"time"
 )
 
 var colors = map[int]string{
@@ -12,15 +11,12 @@ var colors = map[int]string{
 }
 
 func UpdateMap(game *Game) {
-	for _, v := range game.Map {
-		fmt.Println(v)
-	}
-	fmt.Println(game.ToolsList)
-	time.Sleep(time.Second)
+	game.PrintMap()
+	game.PrintTools()
 }
 
 func PrintNextTurn(turn int) {
-	fmt.Println("\ntour", turn)
+	fmt.Println("tour", turn)
 }
 
 func PrintTransMove(trans *Transpalette, x, y int) {

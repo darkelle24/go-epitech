@@ -1,13 +1,17 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 type Transpalette struct {
-	name   string
-	status string
-	x      int
-	y      int
-	colis  *Colis
+	name       string
+	status     string
+	x          int
+	y          int
+	colis      *Colis
+	lastDroped *Colis
 } //(tool, movable)
 
 func (trans *Transpalette) Move(x, y int, floor *[][]Floor) error {
@@ -31,13 +35,11 @@ func (trans *Transpalette) Move(x, y int, floor *[][]Floor) error {
 		trans.y = newy
 	}
 	trans.status = "GO"
-	PrintTransMove(trans, newx, newy)
 	return nil
 }
 
 func (trans *Transpalette) Wait() {
 	trans.status = "WAIT"
-	PrintTransWaiting(trans)
 }
 
 func (trans *Transpalette) Take(x, y int, floor *[][]Floor) error {
@@ -49,7 +51,6 @@ func (trans *Transpalette) Take(x, y int, floor *[][]Floor) error {
 	trans.colis = pack
 	(*floor)[x][y].Tool = nil
 	trans.status = "TAKE"
-	PrintTransPickup(trans, pack)
 	return nil
 }
 
@@ -61,7 +62,7 @@ func (trans *Transpalette) Drop(x, y int, floor *[][]Floor) error {
 	}
 	truck.AddPackage(trans.colis)
 	trans.colis.SetDelivered()
-	PrintTransDrop(trans, trans.colis)
+	trans.lastDroped = trans.colis
 	trans.colis = nil
 	trans.status = "LEAVE"
 	return nil
@@ -83,8 +84,33 @@ func (trans *Transpalette) Get_position() (int, int) {
 	return trans.x, trans.y
 }
 
+func (trans *Transpalette) Get_Colis() *Colis {
+	return trans.colis
+}
+
+func (trans *Transpalette) Get_distance(ctool *Tool) int {
+	tool := *ctool
+	t_x, t_y := tool.Get_position()
+	x := math.Abs(float64(trans.x) - float64(t_x))
+	y := math.Abs(float64(trans.y) - float64(t_y))
+	return int(x) + int(y) - 1
+}
+
+func (trans *Transpalette) Has_Colis() bool {
+	return trans.colis != nil
+}
+
 func (trans *Transpalette) NextTurn() error {
-	if trans.status == "" {
+	switch trans.status {
+	case "GO":
+		PrintTransMove(trans, trans.x, trans.y)
+	case "WAIT":
+		PrintTransWaiting(trans)
+	case "TAKE":
+		PrintTransPickup(trans, trans.colis)
+	case "LEAVE":
+		PrintTransDrop(trans, trans.lastDroped)
+	default:
 		return errors.New("no action was done last turn")
 	}
 	trans.status = ""

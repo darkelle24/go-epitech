@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 )
 
 type TypeTool int
@@ -16,6 +17,7 @@ type Tool interface {
 	Get_name() string
 	Get_type() TypeTool
 	Get_position() (int, int)
+	Get_distance(*Tool) int
 }
 
 type Weight interface {
@@ -143,19 +145,68 @@ func (game *Game) Create_camion(name string, x, y, max_weight, turn_max int) err
 	return nil
 }
 
-func (game *Game) Next_turn() {
+func (game *Game) NextTurn() {
 	game.Turn += 1
 	PrintNextTurn(game.Turn)
-	for _, v := range game.Trucks {
-		err := v.NextTurn()
-		if err != nil {
-			PrintError(err)
-		}
-	}
 	for _, v := range game.Transps {
 		err := v.NextTurn()
 		if err != nil {
 			PrintError(err)
 		}
 	}
+	for _, v := range game.Trucks {
+		err := v.NextTurn()
+		if err != nil {
+			PrintError(err)
+		}
+	}
+	fmt.Println("")
+}
+
+func (game *Game) IsAllDelivered() bool {
+	for _, box := range game.Packs {
+		if !box.IsDelivered() {
+			return false
+		}
+	}
+	return true
+}
+
+func (game *Game) IsDone() bool {
+	if game.Turn >= game.Get_turns() {
+		return true
+	}
+	if game.IsAllDelivered() {
+		return true
+	}
+	return false
+}
+
+func (game *Game) EndStateCharacter() string {
+	if game.IsAllDelivered() {
+		return "😎"
+	}
+	return "🙂"
+}
+
+func (game *Game) PrintMap() {
+	fmt.Println("Map:")
+	for i := range game.Map[0] {
+		for _, line := range game.Map {
+			if line[i].Tool != nil {
+				fmt.Printf("%s\t", line[i].Tool.Get_name())
+			} else {
+				fmt.Printf("--------\t")
+			}
+		}
+		fmt.Println()
+	}
+}
+
+func (game *Game) PrintTools() {
+	fmt.Println("Tools:")
+	for _, elm := range game.ToolsList {
+		fmt.Printf("%s\t", elm.Get_name())
+	}
+	fmt.Println("")
 }

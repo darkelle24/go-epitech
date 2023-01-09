@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 type Camion struct {
 	name           string
@@ -21,7 +24,6 @@ func (truck *Camion) Move(int, int, *[][]Floor) error {
 	}
 	truck.turn_current = truck.turn_max
 	truck.status = "GONE"
-	PrintTruckDepart(truck)
 	return nil
 }
 
@@ -29,7 +31,6 @@ func (truck *Camion) Wait() error {
 	if truck.status != "" {
 		return errors.New("can only do one action a turn")
 	}
-	PrintTruckWaiting(truck)
 	truck.status = "WAITING"
 	return nil
 }
@@ -47,18 +48,22 @@ func (truck *Camion) Is_present() bool {
 }
 
 func (truck *Camion) NextTurn() error {
-	if truck.status == "" {
-		return errors.New("no action was done last turn")
-	}
-	truck.status = ""
 	if truck.turn_current > 0 {
 		truck.turn_current -= 1
 		truck.status = "GONE"
-		PrintTruckGone(truck)
 		if truck.turn_current == 0 {
 			truck.colis_list = []*Colis{}
 		}
 	}
+	switch truck.status {
+	case "WAITING":
+		PrintTruckWaiting(truck)
+	case "GONE":
+		PrintTruckDepart(truck)
+	default:
+		return errors.New("no action was done last turn")
+	}
+	truck.status = ""
 	return nil
 }
 
@@ -84,6 +89,14 @@ func (truck *Camion) Get_status() string {
 
 func (truck *Camion) Get_position() (int, int) {
 	return truck.x, truck.y
+}
+
+func (truck *Camion) Get_distance(ctool *Tool) int {
+	tool := *ctool
+	t_x, t_y := tool.Get_position()
+	x := math.Abs(float64(truck.x) - float64(t_x))
+	y := math.Abs(float64(truck.y) - float64(t_y))
+	return int(x) + int(y) - 1
 }
 
 func (truck *Camion) AddPackage(pack *Colis) error {
