@@ -60,7 +60,9 @@ func (trans *Transpalette) Drop(x, y int, floor *[][]Floor) error {
 	if !ok || trans.colis == nil || !truck.Is_present() {
 		return errors.New("can't drop package on this tile")
 	}
-	truck.AddPackage(trans.colis)
+	if err := truck.AddPackage(trans.colis); err != nil {
+		return err
+	}
 	trans.colis.SetDelivered()
 	trans.lastDroped = trans.colis
 	trans.colis = nil

@@ -23,8 +23,8 @@ func TestTruck(t *testing.T) {
 	truckSuccess := assert.Nil(t, gameEnv.Create_camion(name, x, y, maxWeight, 2))
 	assert.NotNil(t, gameEnv.Create_camion("name", 11, 10, 1000, 5), "out of bonds")
 	assert.NotNil(t, gameEnv.Create_camion("name", x, y, 1000, 5), "cell already occupied")
-	assert.NotNil(t, gameEnv.Create_camion("name", x, y, -1000, 5), "negative weight")
-	assert.NotNil(t, gameEnv.Create_camion("name", x, y, 1000, -5), "negative turns")
+	assert.NotNil(t, gameEnv.Create_camion("name", x+1, y, -1000, 5), "negative weight")
+	assert.NotNil(t, gameEnv.Create_camion("name", x+2, y, 1000, -5), "negative turns")
 
 	if truckSuccess {
 		truck := gameEnv.Trucks[0]
@@ -46,11 +46,10 @@ func TestTruck(t *testing.T) {
 		assert.Equal(t, false, truck.Is_present(), "truck has moved")
 		assert.Nil(t, truck.NextTurn())
 		assert.Equal(t, false, truck.Is_present(), "truck has yet to return 1")
-		assert.Equal(t, 1, truck.Get_comeback(), "comeback should equal 1")
-		assert.Equal(t, "GONE", truck.Get_status(), "status GONE because it hasn't comeback")
+		assert.Equal(t, 2, truck.Get_comeback(), "comeback should equal 2")
 		assert.Nil(t, truck.NextTurn())
 		assert.Equal(t, false, truck.Is_present(), "truck has yet to return 2")
-		assert.Equal(t, 0, truck.Get_comeback(), "comeback should equal 0")
+		assert.Equal(t, 1, truck.Get_comeback(), "comeback should equal 1")
 		assert.NotNil(t, truck.Move(0, 0, &gameEnv.Map), "truck is GONE, shoudn't be able to move")
 		assert.Nil(t, truck.NextTurn())
 		assert.Equal(t, "", truck.Get_status(), "no status because new turn")

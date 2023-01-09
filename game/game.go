@@ -41,16 +41,6 @@ type Floor struct {
 	Tool Tool
 }
 
-type game_functions interface {
-	Set_turns(int)                                  // x y
-	Get_turns() int                                 // x y
-	Create_map(int, int) error                      // x y
-	Create_transpallete(string, int, int) error     // name, x, y
-	Create_colis(string, int, int, int) error       // name, x, y, weight
-	Create_camion(string, int, int, int, int) error // name, x, y, max_weight, turn_max
-	Next_turn()
-}
-
 type Game struct {
 	Map       [][]Floor
 	Turn      int

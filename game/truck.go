@@ -22,7 +22,8 @@ func (truck *Camion) Move(int, int, *[][]Floor) error {
 	if !truck.Is_present() {
 		return errors.New("truck can't move because it is GONE")
 	}
-	truck.turn_current = truck.turn_max
+	const currentTurnOffset = 1
+	truck.turn_current = truck.turn_max + currentTurnOffset
 	truck.status = "GONE"
 	return nil
 }
@@ -44,7 +45,7 @@ func (truck *Camion) Get_comeback() int {
 }
 
 func (truck *Camion) Is_present() bool {
-	return truck.status != "GONE"
+	return truck.turn_current == 0
 }
 
 func (truck *Camion) NextTurn() error {
