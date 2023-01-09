@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/darkelle24/go-epitech/algo"
 	"github.com/darkelle24/go-epitech/game"
 	"github.com/darkelle24/go-epitech/parser"
 )
@@ -16,36 +17,34 @@ func handlePanics() {
 func main() {
 	defer handlePanics()
 	var gameEnv game.Game
-	//fmt.Println(gameEnv)
 
 	if parser.Parser(&gameEnv) != nil {
 		return
 	}
 
-	// JUSTIN REMOVE QUAND T AS PLUS BESOIN DE L EXEMPLE
-	/* gameEnv.Create_map(10, 10)
-	gameEnv.Create_camion("test_camion", 1, 1, 1000, 5)
-	gameEnv.Create_colis("test_colis", 5, 2, 200)
-	gameEnv.Create_transpallete("test_transpallete", 5, 1)
-	// fmt.Println(gameEnv, gameEnv.Map[1][1].Tool.Get_name(), gameEnv.Map[1][5].Tool.Get_name(), gameEnv.Map[5][1].Tool.Get_name())
-	s, ok := gameEnv.Map[5][1].Tool.(*game.Transpalette)
-	truck := gameEnv.Map[1][1].Tool.(*game.Camion)
-	fmt.Println(s, ok, s.Get_name())
-	var floor = &gameEnv.Map
-	fmt.Println((*floor)[5][1].Tool)
-	gameEnv.Next_turn()
-	game.UpdateMap(&gameEnv)
-	s.Take(5, 2, floor)
-	s.Move(-1, 0, floor)
-	s.Move(-1, 0, floor)
-	s.Move(-1, 0, floor)
-	fmt.Println(s, truck)
-	s.Drop(1, 1, floor)
-	fmt.Println(s, truck)
-	gameEnv.Next_turn()
-	game.UpdateMap(&gameEnv)
-	err := s.Move(-1, 0, floor)
-	fmt.Println(err)
-	gameEnv.Next_turn()
-	game.UpdateMap(&gameEnv) */
+	for !gameEnv.IsDone() {
+		for _, trans := range gameEnv.Transps {
+			trans.Move(0, 0, &gameEnv.Map)
+		}
+		for _, truck := range gameEnv.Trucks {
+			algo.SendTruck(truck, &gameEnv)
+		}
+		game.UpdateMap(&gameEnv)
+		gameEnv.NextTurn()
+	}
+
+	// JUSTIN REMOVE
+	// x, y := gameEnv.Transps[0].Get_position()
+	// gameEnv.Transps[0].Take(x-1, y, &gameEnv.Map)
+	// gameEnv.Trucks[0].Wait()
+	// gameEnv.NextTurn()
+	// gameEnv.Transps[0].Move(1, 0, &gameEnv.Map)
+	// gameEnv.Trucks[0].Wait()
+	// gameEnv.NextTurn()
+	// gameEnv.Transps[0].Drop(x+2, y, &gameEnv.Map)
+	// gameEnv.Trucks[0].Move(0, 0, &gameEnv.Map)
+	// gameEnv.NextTurn()
+
+	fmt.Println(gameEnv.EndStateCharacter())
+
 }
