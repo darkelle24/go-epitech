@@ -149,7 +149,7 @@ func Parser(gameEnv *game.Game) error {
 		return err
 	}
 
-	fmt.Println(file)
+	// fmt.Println(file)
 
 	fileArray := strings.Split(file, "\n")
 
