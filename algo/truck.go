@@ -12,6 +12,7 @@ func sendTruck(truck *game.Camion, gameEnv *game.Game) {
 		var tool game.Tool = transp
 		if truck.Get_distance(&tool) < truck.Get_time_max() && transp.Has_Colis() && truck.Get_max_weight()-truck.Get_current_weight() >= transp.Get_Colis().Get_current_weight() {
 			_ = truck.Wait()
+			return
 		}
 	}
 	_ = truck.Move(0, 0, &gameEnv.Map)
