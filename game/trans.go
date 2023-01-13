@@ -61,7 +61,7 @@ func (trans *Transpalette) Take(x, y int, floor *[][]Floor) error {
 func (trans *Transpalette) Drop(x, y int, floor *[][]Floor) error {
 	var tile = (*floor)[x][y]
 	truck, ok := tile.Tool.(*Camion)
-	if !ok || trans.colis == nil || !truck.Is_present() {
+	if !ok || trans.colis == nil || !truck.IsPresent() {
 		return errWrongTarget
 	}
 	if err := truck.AddPackage(trans.colis); err != nil {
@@ -74,42 +74,42 @@ func (trans *Transpalette) Drop(x, y int, floor *[][]Floor) error {
 	return nil
 }
 
-// Get_name returns the Transpalette's name
-func (trans *Transpalette) Get_name() string {
+// GetName returns the Transpalette's name
+func (trans *Transpalette) GetName() string {
 	return trans.name
 }
 
-// Get_type returns the Transpalette's type
-func (trans *Transpalette) Get_type() TypeTool {
+// GetType returns the Transpalette's type
+func (trans *Transpalette) GetType() TypeTool {
 	return TRANSPALET
 }
 
-// Get_status returns the Transpalette's status
-func (trans *Transpalette) Get_status() string {
+// GetStatus returns the Transpalette's status
+func (trans *Transpalette) GetStatus() string {
 	return trans.status
 }
 
-// Get_position returns the Transpalette's position x, y
-func (trans *Transpalette) Get_position() (x int, y int) {
+// GetPosition returns the Transpalette's position x, y
+func (trans *Transpalette) GetPosition() (x int, y int) {
 	return trans.x, trans.y
 }
 
-// Get_Colis returns the Transpalette's Colis
-func (trans *Transpalette) Get_Colis() *Colis {
+// GetColis returns the Transpalette's Colis
+func (trans *Transpalette) GetColis() *Colis {
 	return trans.colis
 }
 
-// Get_distance returns the Transpalette's distance to another tool
-func (trans *Transpalette) Get_distance(ctool *Tool) int {
+// GetDistance returns the Transpalette's distance to another tool
+func (trans *Transpalette) GetDistance(ctool *Tool) int {
 	tool := *ctool
-	t_x, t_y := tool.Get_position()
-	x := math.Abs(float64(trans.x) - float64(t_x))
-	y := math.Abs(float64(trans.y) - float64(t_y))
+	tX, tY := tool.GetPosition()
+	x := math.Abs(float64(trans.x) - float64(tX))
+	y := math.Abs(float64(trans.y) - float64(tY))
 	return int(x) + int(y) - 1
 }
 
-// Has_Colis returns true if Transpalette is carying a Colis
-func (trans *Transpalette) Has_Colis() bool {
+// HasColis returns true if Transpalette is carying a Colis
+func (trans *Transpalette) HasColis() bool {
 	return trans.colis != nil
 }
 

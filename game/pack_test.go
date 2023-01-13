@@ -11,8 +11,8 @@ import (
 
 func TestPackage(t *testing.T) {
 	var gameEnv game.Game
-	assert.NotNil(t, gameEnv.Create_colis("name", 0, 0, 200), "requires map to create a package")
-	require.Nil(t, gameEnv.Create_map(10, 10), "requires map to test package")
+	assert.NotNil(t, gameEnv.CreateColis("name", 0, 0, 200), "requires map to create a package")
+	require.Nil(t, gameEnv.CreateMap(10, 10), "requires map to test package")
 
 	const (
 		name   = "pack_1"
@@ -20,26 +20,26 @@ func TestPackage(t *testing.T) {
 		y      = 0
 		weight = 200
 	)
-	colisSuccess := assert.Nil(t, gameEnv.Create_colis(name, x, y, weight))
-	assert.NotNil(t, gameEnv.Create_colis("name", 11, 10, 200), "out of bonds")
-	assert.NotNil(t, gameEnv.Create_colis("name", x, y, 200), "cell already occupied")
-	assert.NotNil(t, gameEnv.Create_colis("name", x+1, y+1, -100), "negative weight")
+	colisSuccess := assert.Nil(t, gameEnv.CreateColis(name, x, y, weight))
+	assert.NotNil(t, gameEnv.CreateColis("name", 11, 10, 200), "out of bonds")
+	assert.NotNil(t, gameEnv.CreateColis("name", x, y, 200), "cell already occupied")
+	assert.NotNil(t, gameEnv.CreateColis("name", x+1, y+1, -100), "negative weight")
 
 	if colisSuccess {
 		var tile = gameEnv.Map[x][y]
 		colis, ok := tile.Tool.(*game.Colis)
 		assert.Equal(t, true, ok)
 		if ok {
-			assert.Equal(t, name, colis.Get_name())
-			resx, resy := colis.Get_position()
+			assert.Equal(t, name, colis.GetName())
+			resx, resy := colis.GetPosition()
 			assert.Equal(t, resx, x)
 			assert.Equal(t, resy, y)
-			assert.Equal(t, game.COLIS, colis.Get_type())
+			assert.Equal(t, game.COLIS, colis.GetType())
 			assert.Equal(t, false, colis.IsDelivered(), "not delivered yet")
 			colis.SetDelivered()
 			assert.Equal(t, true, colis.IsDelivered(), "is delivered")
-			assert.Equal(t, weight, colis.Get_current_weight())
-			assert.Equal(t, weight, colis.Get_max_weight())
+			assert.Equal(t, weight, colis.GetCurrentWeight())
+			assert.Equal(t, weight, colis.GetMaxWeight())
 		}
 	}
 }

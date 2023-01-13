@@ -77,10 +77,10 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 	switch *state {
 	case 1:
 		if width, height, turn, err := firstLineParse(s); err == nil {
-			if mapErr := gameEnv.Create_map(width, height); mapErr != nil {
+			if mapErr := gameEnv.CreateMap(width, height); mapErr != nil {
 				return err
 			}
-			gameEnv.Set_turns(turn)
+			gameEnv.SetTurns(turn)
 		} else {
 			return err
 		}

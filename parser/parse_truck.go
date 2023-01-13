@@ -41,7 +41,7 @@ func createTruck(input string, gameEnv *game.Game) error {
 		return err
 	}
 
-	if err = gameEnv.Create_camion(name, posX, posY, weightMax, turn); err != nil {
+	if err = gameEnv.CreateCamion(name, posX, posY, weightMax, turn); err != nil {
 		return err
 	}
 

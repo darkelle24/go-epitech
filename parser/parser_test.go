@@ -183,9 +183,9 @@ func TestOrderParser(t *testing.T) {
 	for _, test := range orderParserTests {
 		var gameEnv game.Game
 
-		mapError := gameEnv.Create_map(10, 10)
-		if mapError != nil {
-			if err := orderParser(test.input, &gameEnv); err != nil && !test.expectedError {
+		mapError := gameEnv.CreateMap(10, 10)
+		if mapError == nil {
+			if err := orderParser(test.input, &gameEnv); err == nil && !test.expectedError {
 				t.Errorf("firstLineParse returns an error when it shouldn't")
 			} else if err == nil && test.expectedError {
 				t.Errorf("firstLineParse does not return an error when it should")

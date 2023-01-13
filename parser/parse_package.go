@@ -58,7 +58,7 @@ func createPackage(input string, gameEnv *game.Game) error {
 		return err
 	}
 
-	if err = gameEnv.Create_colis(name, posX, posY, weight); err != nil {
+	if err = gameEnv.CreateColis(name, posX, posY, weight); err != nil {
 		return err
 	}
 

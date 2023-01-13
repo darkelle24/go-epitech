@@ -1,5 +1,5 @@
-// Package that implements the core functions of the game
-// package game is used to initialize the game and provide a state of it
+// Package game is used to initialize the game and provide a state of it
+// it implements the core functions of the game
 package game
 
 import (
@@ -19,30 +19,30 @@ const (
 
 // Tool is an interface for Camion, Colis and Transpalette
 type Tool interface {
-	Get_name() string
-	Get_type() TypeTool
-	Get_position() (int, int)
-	Get_distance(*Tool) int
+	GetName() string
+	GetType() TypeTool
+	GetPosition() (int, int)
+	GetDistance(*Tool) int
 }
 
 // Weight is an interface for Colis and Camion
 type Weight interface {
-	Get_current_weight() int
-	Get_max_weight() int
+	GetCurrentWeight() int
+	GetMaxWeight() int
 }
 
 // Movable is an interface for Camion and Transpalette
 type Movable interface {
 	Move(int, int, *[][]Floor) error
-	Get_status() string
+	GetStatus() string
 	NextTurn() error
 }
 
 // Waiter is an interface for Camion
 type Waiter interface {
-	Get_time_max() int
-	Get_comeback() int
-	Is_present() bool
+	GetTimeMax() int
+	GetComeback() int
+	IsPresent() bool
 }
 
 // Floor is the Map
@@ -75,18 +75,18 @@ var errWrongAction = errors.New("cannot do this action")
 
 // Game methods
 
-// Set_turns sets the total number of turns in the game
-func (game *Game) Set_turns(turns int) {
+// SetTurns sets the total number of turns in the game
+func (game *Game) SetTurns(turns int) {
 	game.turns = turns
 }
 
-// Get_turns get the total number of turns in the game
-func (game *Game) Get_turns() int {
+// GetTurns get the total number of turns in the game
+func (game *Game) GetTurns() int {
 	return game.turns
 }
 
-// Create_map initialize the map by with the dimensions in the arguments
-func (game *Game) Create_map(x, y int) error {
+// CreateMap initialize the map by with the dimensions in the arguments
+func (game *Game) CreateMap(x, y int) error {
 	if game.Map != nil {
 		return errAlreadyCreated
 	}
@@ -115,8 +115,8 @@ func checkToolCreation(game *Game, x, y int) error {
 	return nil
 }
 
-// Create_transpallete creates a transpallete Tool
-func (game *Game) Create_transpallete(name string, x, y int) error {
+// CreateTranspallete creates a transpallete Tool
+func (game *Game) CreateTranspallete(name string, x, y int) error {
 	if err := checkToolCreation(game, x, y); err != nil {
 		return err
 	}
@@ -128,8 +128,8 @@ func (game *Game) Create_transpallete(name string, x, y int) error {
 	return nil
 }
 
-// Create_colis creates a colis Tool
-func (game *Game) Create_colis(name string, x, y, weight int) error {
+// CreateColis creates a colis Tool
+func (game *Game) CreateColis(name string, x, y, weight int) error {
 	if err := checkToolCreation(game, x, y); err != nil {
 		return err
 	}
@@ -144,18 +144,18 @@ func (game *Game) Create_colis(name string, x, y, weight int) error {
 	return nil
 }
 
-// Create_camion creates a camion Tool
-func (game *Game) Create_camion(name string, x, y, max_weight, turn_max int) error {
+// CreateCamion creates a camion Tool
+func (game *Game) CreateCamion(name string, x, y, maxWeight, turnMax int) error {
 	if err := checkToolCreation(game, x, y); err != nil {
 		return err
 	}
-	if max_weight <= 0 {
+	if maxWeight <= 0 {
 		return errNegativeValue
 	}
-	if turn_max <= 0 {
+	if turnMax <= 0 {
 		return errNegativeValue
 	}
-	truck := Camion{name: name, x: x, y: y, poids_max: max_weight, turn_max: turn_max}
+	truck := Camion{name: name, x: x, y: y, poidsMax: maxWeight, turnMax: turnMax}
 	game.ToolsList = append(game.ToolsList, &truck)
 	game.Trucks = append(game.Trucks, &truck)
 	tile := Floor{Tool: &truck}
@@ -196,7 +196,7 @@ func (game *Game) IsAllDelivered() bool {
 
 // IsDone checks if the game is over
 func (game *Game) IsDone() bool {
-	if game.Turn >= game.Get_turns() {
+	if game.Turn >= game.GetTurns() {
 		return true
 	}
 	if game.IsAllDelivered() {
@@ -219,7 +219,7 @@ func (game *Game) PrintMap() {
 	for i := range game.Map[0] {
 		for _, line := range game.Map {
 			if line[i].Tool != nil {
-				fmt.Printf("%s\t", line[i].Tool.Get_name())
+				fmt.Printf("%s\t", line[i].Tool.GetName())
 			} else {
 				fmt.Printf("--------\t")
 			}
@@ -232,7 +232,7 @@ func (game *Game) PrintMap() {
 func (game *Game) PrintTools() {
 	fmt.Println("Tools:")
 	for _, elm := range game.ToolsList {
-		fmt.Printf("%s\t", elm.Get_name())
+		fmt.Printf("%s\t", elm.GetName())
 	}
 	fmt.Println("")
 }

@@ -18,7 +18,7 @@ func filterTrans(pack game.Tool, allTransp []*game.Transpalette) []*game.Transpa
 	newTransp := make([]*game.Transpalette, 0)
 
 	for _, trans := range allTransp {
-		if trans.Get_distance(&pack) == allTransp[0].Get_distance(&pack) {
+		if trans.GetDistance(&pack) == allTransp[0].GetDistance(&pack) {
 			newTransp = append(newTransp, trans)
 		} else {
 			return newTransp
@@ -51,7 +51,7 @@ func setFinalTransp(transps []*game.Transpalette, managers *[]*PackageManager) {
 			var CurrentPack game.Tool = pack.Pack
 			var BestPack game.Tool = bestPack.Pack
 			println(bestPack.Trans)
-			if pack.FinalTrans == nil && pack.FinalTruck.Get_distance(&CurrentPack) < bestPack.FinalTruck.Get_distance(&BestPack) {
+			if pack.FinalTrans == nil && pack.FinalTruck.GetDistance(&CurrentPack) < bestPack.FinalTruck.GetDistance(&BestPack) {
 				bestPack = pack
 			}
 		}
@@ -70,10 +70,10 @@ func SetupManager(gameEnv *game.Game) []*PackageManager {
 		trucks := gameEnv.Trucks
 
 		sort.Slice(trans, func(i, j int) bool {
-			return trans[i].Get_distance(&tool) < trans[j].Get_distance(&tool)
+			return trans[i].GetDistance(&tool) < trans[j].GetDistance(&tool)
 		})
 		sort.Slice(trucks, func(i, j int) bool {
-			return trucks[i].Get_distance(&tool) < trucks[j].Get_distance(&tool)
+			return trucks[i].GetDistance(&tool) < trucks[j].GetDistance(&tool)
 		})
 		packsInfo = append(packsInfo, &PackageManager{Pack: pack, Trans: filterTrans(tool, trans), FinalTruck: trucks[0]})
 	}
@@ -88,8 +88,8 @@ func wichTransAvailable(transps []*game.Transpalette, managers []*PackageManager
 func moveToBox(trans *game.Transpalette, pack *game.Colis, ground *[][]game.Floor) {
 	var toolTrans game.Tool = trans
 
-	if pack.Get_distance(&toolTrans) == 0 {
-		x, y := pack.Get_position()
+	if pack.GetDistance(&toolTrans) == 0 {
+		x, y := pack.GetPosition()
 		_ = trans.Take(x, y, ground)
 	}
 }
@@ -97,8 +97,8 @@ func moveToBox(trans *game.Transpalette, pack *game.Colis, ground *[][]game.Floo
 func moveToTruck(trans *game.Transpalette, truck *game.Camion, ground *[][]game.Floor) {
 	var toolTrans game.Tool = trans
 
-	if truck.Get_distance(&toolTrans) == 0 && trans.Get_Colis() != nil {
-		x, y := truck.Get_position()
+	if truck.GetDistance(&toolTrans) == 0 && trans.GetColis() != nil {
+		x, y := truck.GetPosition()
 		_ = trans.Drop(x, y, ground)
 	}
 }
@@ -116,7 +116,7 @@ func UpdateManager(gameEnv *game.Game, managers []*PackageManager) []*PackageMan
 		} else if manager.FinalTrans == nil {
 			manager.FinalTrans = available
 		}
-		if manager.FinalTrans.Get_Colis() == nil {
+		if manager.FinalTrans.GetColis() == nil {
 			moveToBox(manager.FinalTrans, manager.Pack, &gameEnv.Map)
 		} else {
 			moveToTruck(manager.FinalTrans, manager.FinalTruck, &gameEnv.Map)

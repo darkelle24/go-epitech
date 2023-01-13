@@ -11,37 +11,37 @@ type Colis struct {
 	delivered bool
 } // (tool, weight)
 
-// Get_name returns Colis's name
-func (pack *Colis) Get_name() string {
+// GetName returns Colis's name
+func (pack *Colis) GetName() string {
 	return pack.name
 }
 
-// Get_type returns Colis's type
-func (pack *Colis) Get_type() TypeTool {
+// GetType returns Colis's type
+func (pack *Colis) GetType() TypeTool {
 	return COLIS
 }
 
-// Get_position returns Colis's position
-func (pack *Colis) Get_position() (x int, y int) {
+// GetPosition returns Colis's position
+func (pack *Colis) GetPosition() (x int, y int) {
 	return pack.x, pack.y
 }
 
-// Get_distance returns Colis's distance to another tool
-func (pack *Colis) Get_distance(ctool *Tool) int {
+// GetDistance returns Colis's distance to another tool
+func (pack *Colis) GetDistance(ctool *Tool) int {
 	tool := *ctool
-	t_x, t_y := tool.Get_position()
-	x := math.Abs(float64(pack.x) - float64(t_x))
-	y := math.Abs(float64(pack.y) - float64(t_y))
+	tX, tY := tool.GetPosition()
+	x := math.Abs(float64(pack.x) - float64(tX))
+	y := math.Abs(float64(pack.y) - float64(tY))
 	return int(x) + int(y) - 1
 }
 
-// Get_current_weight returns Colis's current weight
-func (pack *Colis) Get_current_weight() int {
+// GetCurrentWeight returns Colis's current weight
+func (pack *Colis) GetCurrentWeight() int {
 	return pack.size
 }
 
-// Get_max_weight returns Colis's max weight
-func (pack *Colis) Get_max_weight() int {
+// GetMaxWeight returns Colis's max weight
+func (pack *Colis) GetMaxWeight() int {
 	return pack.size
 }
 

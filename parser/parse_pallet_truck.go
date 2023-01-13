@@ -37,7 +37,7 @@ func createPalletTruck(input string, gameEnv *game.Game) error {
 		return err
 	}
 
-	if err = gameEnv.Create_transpallete(name, posX, posY); err != nil {
+	if err = gameEnv.CreateTranspallete(name, posX, posY); err != nil {
 		return err
 	}
 

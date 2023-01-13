@@ -5,12 +5,12 @@ import (
 )
 
 func sendTruck(truck *game.Camion, gameEnv *game.Game) {
-	if truck.Is_present() && truck.Get_current_weight() == 0 {
+	if truck.IsPresent() && truck.GetCurrentWeight() == 0 {
 		_ = truck.Wait()
 	}
 	for _, transp := range gameEnv.Transps {
 		var tool game.Tool = transp
-		if truck.Get_distance(&tool) < truck.Get_time_max() && transp.Has_Colis() && truck.Get_max_weight()-truck.Get_current_weight() >= transp.Get_Colis().Get_current_weight() {
+		if truck.GetDistance(&tool) < truck.GetTimeMax() && transp.HasColis() && truck.GetMaxWeight()-truck.GetCurrentWeight() >= transp.GetColis().GetCurrentWeight() {
 			_ = truck.Wait()
 			return
 		}
