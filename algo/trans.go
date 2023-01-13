@@ -94,6 +94,15 @@ func moveToBox(trans *game.Transpalette, pack *game.Colis, ground *[][]game.Floo
 	}
 }
 
+func moveToTruck(trans *game.Transpalette, truck *game.Camion, ground *[][]game.Floor) {
+	var toolTrans game.Tool = trans
+
+	if truck.Get_distance(&toolTrans) == 0 && trans.Get_Colis() != nil {
+		x, y := truck.Get_position()
+		_ = trans.Drop(x, y, ground)
+	}
+}
+
 // UpdateManager handles all the manager for each Package and what actions should Transpalette be taking
 func UpdateManager(gameEnv *game.Game, managers []*PackageManager) []*PackageManager {
 	for i, manager := range managers {
@@ -108,12 +117,9 @@ func UpdateManager(gameEnv *game.Game, managers []*PackageManager) []*PackageMan
 			manager.FinalTrans = available
 		}
 		if manager.FinalTrans.Get_Colis() == nil {
-			// Move to Box
 			moveToBox(manager.FinalTrans, manager.Pack, &gameEnv.Map)
-			println(manager.FinalTrans.Get_name(), "going to box", manager.Pack.Get_name())
 		} else {
-			// Move to Truck
-			println(manager.FinalTrans.Get_name(), "going to truck", manager.FinalTruck.Get_name())
+			moveToTruck(manager.FinalTrans, manager.FinalTruck, &gameEnv.Map)
 		}
 	}
 	return managers
