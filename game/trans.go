@@ -125,7 +125,7 @@ func (trans *Transpalette) NextTurn() error {
 	case "LEAVE":
 		PrintTransDrop(trans, trans.lastDroped)
 	default:
-		return errNoAction
+		PrintTransWaiting(trans)
 	}
 	trans.status = ""
 	return nil
