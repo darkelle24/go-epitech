@@ -1,0 +1,8 @@
+5 5 10
+colis__1 2 1 green
+colis__2 2 2 BLUE
+colis__3 0 3 yellow
+colis__4 4 1 green
+transp_1 0 0
+transp_2 3 3
+air_repo 3 4 4000 5
