@@ -21,7 +21,7 @@ func TestTrans(t *testing.T) {
 	)
 	transSuccess := assert.Nil(t, gameEnv.Create_transpallete(name, x, y))
 	assert.Nil(t, gameEnv.Create_colis("name", 0, 1, 200))
-	assert.Nil(t, gameEnv.Create_camion("name", 1, 1, 2, 200))
+	assert.Nil(t, gameEnv.Create_camion("name", 1, 1, 800, 2))
 	assert.NotNil(t, gameEnv.Create_transpallete("name", 11, 10), "out of bonds")
 	assert.NotNil(t, gameEnv.Create_transpallete("name", x, y), "cell already occupied")
 
