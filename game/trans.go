@@ -46,7 +46,7 @@ func (trans *Transpalette) Wait() {
 
 // Take is used to take a Colis on a designed cell
 func (trans *Transpalette) Take(x, y int, floor *[][]Floor) error {
-	var tile = (*floor)[x][y]
+	tile := (*floor)[x][y]
 	pack, ok := tile.Tool.(*Colis)
 	if !ok || trans.colis != nil {
 		return errWrongTarget
@@ -59,7 +59,7 @@ func (trans *Transpalette) Take(x, y int, floor *[][]Floor) error {
 
 // Drop is used to drop your Colis in the Truck
 func (trans *Transpalette) Drop(x, y int, floor *[][]Floor) error {
-	var tile = (*floor)[x][y]
+	tile := (*floor)[x][y]
 	truck, ok := tile.Tool.(*Camion)
 	if !ok || trans.colis == nil || !truck.IsPresent() {
 		return errWrongTarget

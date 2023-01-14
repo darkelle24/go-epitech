@@ -63,15 +63,17 @@ type Game struct {
 
 // Errors
 
-var errAlreadyCreated = errors.New("already created")
-var errNegativeValue = errors.New("tried to provide negative value for a positive field")
-var errMapNotCreated = errors.New("must have a map to create a tool")
-var errOutOfBonds = errors.New("targeted cell is out of bonds")
-var errAlreadyOccupied = errors.New("cell is already occupied")
-var errTooFar = errors.New("cannot target this far")
-var errWrongTarget = errors.New("cannot target this")
-var errNoAction = errors.New("no action was done last turn")
-var errWrongAction = errors.New("cannot do this action")
+var (
+	errAlreadyCreated  = errors.New("already created")
+	errNegativeValue   = errors.New("tried to provide negative value for a positive field")
+	errMapNotCreated   = errors.New("must have a map to create a tool")
+	errOutOfBonds      = errors.New("targeted cell is out of bonds")
+	errAlreadyOccupied = errors.New("cell is already occupied")
+	errTooFar          = errors.New("cannot target this far")
+	errWrongTarget     = errors.New("cannot target this")
+	errNoAction        = errors.New("no action was done last turn")
+	errWrongAction     = errors.New("cannot do this action")
+)
 
 // Game methods
 

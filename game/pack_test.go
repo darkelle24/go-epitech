@@ -26,7 +26,7 @@ func TestPackage(t *testing.T) {
 	assert.NotNil(t, gameEnv.CreateColis("name", x+1, y+1, -100), "negative weight")
 
 	if colisSuccess {
-		var tile = gameEnv.Map[x][y]
+		tile := gameEnv.Map[x][y]
 		colis, ok := tile.Tool.(*game.Colis)
 		assert.Equal(t, true, ok)
 		if ok {
