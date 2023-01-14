@@ -2,7 +2,6 @@ package parser
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -12,13 +11,15 @@ import (
 
 // Errors
 
-var errWrongNumberOfArg = errors.New("wrong number of argument")
-var errWrongNumberOfParam = errors.New("wrong number of parameters")
-var errNegaValue = errors.New("the value can t be negative")
-var errWrongNumberTurn = errors.New("wrong number of turn")
-var errFileErr = errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
-var errWeight = errors.New("weight max can't be lower than 100")
-var errColor = errors.New("problem with color")
+var (
+	errWrongNumberOfArg   = errors.New("wrong number of argument")
+	errWrongNumberOfParam = errors.New("wrong number of parameters")
+	errNegaValue          = errors.New("the value can t be negative")
+	errWrongNumberTurn    = errors.New("wrong number of turn")
+	errFile               = errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
+	errWeight             = errors.New("weight max can't be lower than 100")
+	errColor              = errors.New("problem with color")
+)
 
 func getPath() (string, error) {
 	argLen := len(os.Args[0:])
@@ -32,7 +33,7 @@ func getPath() (string, error) {
 func readFile(path string) (string, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return "", fmt.Errorf("%w", err)
+		return "", errors.Unwrap(err)
 	}
 
 	str := string(data)
@@ -46,7 +47,7 @@ func checkNumber(input string) (int, error) {
 		return int(i), nil
 	}
 
-	return 0, fmt.Errorf("%w", err)
+	return 0, errors.Unwrap(err)
 }
 
 func firstLineParse(line string) (width int, height int, numberTurnSimulate int, err error) {
@@ -141,7 +142,7 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 	}
 
 	if len(gameEnv.Transps) == 0 || len(gameEnv.Packs) == 0 || len(gameEnv.Trucks) == 0 {
-		return errFileErr
+		return errFile
 	}
 
 	return nil

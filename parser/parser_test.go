@@ -23,11 +23,12 @@ var getPathTests = []getPathTest{
 func TestGetPath(t *testing.T) {
 	for _, test := range getPathTests {
 		os.Args = test.args
-		if output, err := getPath(); err != nil && !test.expectedError {
+		switch output, err := getPath(); {
+		case err != nil && !test.expectedError:
 			t.Errorf("getPath returns an error when it shouldn't")
-		} else if err == nil && test.expectedError {
+		case err == nil && test.expectedError:
 			t.Errorf("getPath does not return an error when it should")
-		} else if output != test.expected {
+		case output != test.expected:
 			t.Errorf("Output \"%s\" not equal to expected \"%s\"", output, test.expected)
 		}
 	}

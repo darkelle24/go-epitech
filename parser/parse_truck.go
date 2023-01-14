@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -14,7 +15,7 @@ func parserTruck(input string) (name string, posX int, posY int, weightMax int, 
 
 	n, err := fmt.Sscanf(input, "%s %d %d %d %d", &name, &posX, &posY, &weightMax, &turn)
 	if err != nil {
-		return
+		return "", 0, 0, 0, 0, errors.Unwrap(err)
 	}
 
 	if n != 5 {
@@ -39,7 +40,7 @@ func createTruck(input string, gameEnv *game.Game) error {
 	}
 
 	if err := gameEnv.CreateCamion(name, posX, posY, weightMax, turn); err != nil {
-		return fmt.Errorf("%w", err)
+		return errors.Unwrap(err)
 	}
 
 	return nil

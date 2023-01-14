@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -35,7 +36,7 @@ func createPalletTruck(input string, gameEnv *game.Game) error {
 	}
 
 	if err := gameEnv.CreateTranspallete(name, posX, posY); err != nil {
-		return fmt.Errorf("%w", err)
+		return errors.Unwrap(err)
 	}
 
 	return nil
