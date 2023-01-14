@@ -15,7 +15,7 @@ func parserPalletTruck(input string) (name string, posX int, posY int, err error
 
 	n, err := fmt.Sscanf(input, "%s %d %d", &name, &posX, &posY)
 	if err != nil {
-		return
+		return "", 0, 0, errors.Unwrap(err)
 	}
 
 	if n != 3 {
