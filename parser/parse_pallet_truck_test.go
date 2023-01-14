@@ -29,19 +29,19 @@ var parserPalletTruckTests = []parserPalletTruckTest{
 }
 
 func TestParserPalletTruck(t *testing.T) {
-
 	for _, test := range parserPalletTruckTests {
-		if name, x, y, err := parserPalletTruck(test.input); err != nil && !test.expectedError {
+		switch name, x, y, err := parserPalletTruck(test.input); {
+		case err != nil && !test.expectedError:
 			t.Errorf("parserPackage returns an error when it shouldn't")
-		} else if err == nil && test.expectedError {
+		case err == nil && test.expectedError:
 			t.Errorf("parserPackage does not return an error when it should")
-		} else if err != nil && test.expectedError {
+		case err != nil && test.expectedError:
 			return
-		} else if name != test.expectedName {
+		case name != test.expectedName:
 			t.Errorf("Output Name \"%s\" not equal to expected \"%s\"", name, test.expectedName)
-		} else if x != test.expectedX {
+		case x != test.expectedX:
 			t.Errorf("Output X \"%d\" not equal to expected \"%d\"", x, test.expectedX)
-		} else if y != test.expectedY {
+		case y != test.expectedY:
 			t.Errorf("Output Y \"%d\" not equal to expected \"%d\"", y, test.expectedY)
 		}
 	}

@@ -14,7 +14,6 @@ func parserPalletTruck(input string) (name string, posX int, posY int, err error
 	}
 
 	n, err := fmt.Sscanf(input, "%s %d %d", &name, &posX, &posY)
-
 	if err != nil {
 		return
 	}
@@ -32,12 +31,11 @@ func parserPalletTruck(input string) (name string, posX int, posY int, err error
 
 func createPalletTruck(input string, gameEnv *game.Game) error {
 	name, posX, posY, err := parserPalletTruck(input)
-
 	if err != nil {
 		return err
 	}
 
-	if err = gameEnv.CreateTranspallete(name, posX, posY); err != nil {
+	if err := gameEnv.CreateTranspallete(name, posX, posY); err != nil {
 		return err
 	}
 

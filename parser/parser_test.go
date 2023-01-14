@@ -20,7 +20,6 @@ var getPathTests = []getPathTest{
 }
 
 func TestGetPath(t *testing.T) {
-
 	for _, test := range getPathTests {
 		os.Args = test.args
 		if output, err := getPath(); err != nil && !test.expectedError {
@@ -50,12 +49,10 @@ var readFileTests = []readFileTest{
 func subTestReadFile(t *testing.T, test readFileTest) {
 	if test.createdFile {
 		f, err := os.Create(test.path)
-
 		if err != nil {
 			return
 		}
 
-		defer os.Remove(test.path)
 		defer f.Close()
 
 		_, err = f.WriteString(test.text)
@@ -64,21 +61,24 @@ func subTestReadFile(t *testing.T, test readFileTest) {
 		}
 	}
 
-	if output, err := readFile(test.path); err != nil && !test.expectedError {
+	switch output, err := readFile(test.path); {
+	case err != nil && !test.expectedError:
 		t.Errorf("readFile returns an error when it shouldn't")
-	} else if err == nil && test.expectedError {
+	case err == nil && test.expectedError:
 		t.Errorf("readFile does not return an error when it should")
-	} else if err != nil && test.expectedError {
+	case err != nil && test.expectedError:
 		return
-	} else if output != test.text {
+	case output != test.text:
 		t.Errorf("Output \"%s\" not equal to expected \"%s\"", output, test.text)
 	}
 }
 
 func TestReadFile(t *testing.T) {
-
 	for _, test := range readFileTests {
 		subTestReadFile(t, test)
+		if os.Remove(test.path) != nil {
+			return
+		}
 	}
 }
 
@@ -98,15 +98,15 @@ var checkNumberTests = []checkNumberTest{
 }
 
 func TestCheckNumber(t *testing.T) {
-
 	for _, test := range checkNumberTests {
-		if output, err := checkNumber(test.input); err != nil && !test.expectedError {
+		switch output, err := checkNumber(test.input); {
+		case err != nil && !test.expectedError:
 			t.Errorf("checkNumber returns an error when it shouldn't")
-		} else if err == nil && test.expectedError {
+		case err == nil && test.expectedError:
 			t.Errorf("checkNumber does not return an error when it should")
-		} else if err != nil && test.expectedError {
+		case err != nil && test.expectedError:
 			return
-		} else if output != test.expected {
+		case output != test.expected:
 			t.Errorf("Output \"%d\" not equal to expected \"%d\"", output, test.expected)
 		}
 	}
@@ -146,19 +146,19 @@ var firstLineParseTests = []firstLineParseTest{
 }
 
 func TestFirstLineParse(t *testing.T) {
-
 	for _, test := range firstLineParseTests {
-		if W, H, T, err := firstLineParse(test.input); err != nil && !test.expectedError {
+		switch W, H, T, err := firstLineParse(test.input); {
+		case err != nil && !test.expectedError:
 			t.Errorf("firstLineParse returns an error when it shouldn't")
-		} else if err == nil && test.expectedError {
+		case err == nil && test.expectedError:
 			t.Errorf("firstLineParse does not return an error when it should")
-		} else if err != nil && test.expectedError {
+		case err != nil && test.expectedError:
 			return
-		} else if W != test.expectedW {
+		case W != test.expectedW:
 			t.Errorf("Output Width \"%d\" not equal to expected \"%d\"", W, test.expectedW)
-		} else if H != test.expectedH {
+		case H != test.expectedH:
 			t.Errorf("Output Height \"%d\" not equal to expected \"%d\"", H, test.expectedH)
-		} else if T != test.expectedT {
+		case T != test.expectedT:
 			t.Errorf("Output Turn \"%d\" not equal to expected \"%d\"", T, test.expectedT)
 		}
 	}
@@ -182,7 +182,6 @@ var orderParserTests = []orderParserTest{
 }
 
 func TestOrderParser(t *testing.T) {
-
 	for _, test := range orderParserTests {
 		var gameEnv game.Game
 

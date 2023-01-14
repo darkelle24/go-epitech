@@ -13,7 +13,6 @@ import (
 func getPath() (string, error) {
 	arg_len := len(os.Args[0:])
 	if arg_len != 2 {
-		// fmt.Println("wrong number of argument")
 		return "", errors.New("wrong number of argument")
 	}
 
@@ -22,13 +21,11 @@ func getPath() (string, error) {
 
 func readFile(path string) (string, error) {
 	data, err := os.ReadFile(path)
-
 	if err != nil {
 		fmt.Println(err)
 		return "", err
 	}
 
-	// Conversion des bytes en chaîne de caractères
 	str := string(data)
 	return str, nil
 }
@@ -88,11 +85,11 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 		} else {
 			return err
 		}
-		*state = *state + 1
+		*state++
 	case 2:
 		list := strings.Split(s, " ")
 		if len(list) == 3 {
-			*state = *state + 1
+			*state++
 			return switchParser(state, gameEnv, s)
 		} else if len(list) != 4 {
 			return errors.New("wrong number of parameters")
@@ -103,7 +100,7 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 	case 3:
 		list := strings.Split(s, " ")
 		if len(list) == 5 {
-			*state = *state + 1
+			*state++
 			return switchParser(state, gameEnv, s)
 		} else if len(list) != 3 {
 			return errors.New("wrong number of parameters")
@@ -128,13 +125,11 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 
 	for _, s := range fileArray {
 		if err := switchParser(&state, gameEnv, s); err != nil {
-			// fmt.Println(err)
 			return err
 		}
 	}
 
 	if len(gameEnv.Transps) == 0 || len(gameEnv.Packs) == 0 || len(gameEnv.Trucks) == 0 {
-		// fmt.Println("need min 1 pallet truck, min 1 truck and min 1 package")
 		return errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
 	}
 
@@ -142,20 +137,15 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 }
 
 func Parser(gameEnv *game.Game) {
-
 	path, err := getPath()
-
 	if err != nil {
 		panic(err)
 	}
 
 	file, err := readFile(path)
-
 	if err != nil {
 		panic(err)
 	}
-
-	// fmt.Println(file)
 
 	fileArray := strings.Split(strings.ReplaceAll(file, "\r\n", "\n"), "\n")
 

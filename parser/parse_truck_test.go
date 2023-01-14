@@ -42,7 +42,6 @@ var parserTruckTests = []parserTruckTest{
 }
 
 func TestParserTruck(t *testing.T) {
-
 	for _, test := range parserTruckTests {
 		if name, x, y, weight, turn, err := parserTruck(test.input); err != nil && !test.expectedError {
 			t.Errorf("parserTruck returns an error when it shouldn't")

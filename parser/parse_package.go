@@ -30,7 +30,6 @@ func parserPackage(input string) (name string, posX int, posY int, weight int, e
 	}
 
 	n, err := fmt.Sscanf(input, "%s %d %d %s", &name, &posX, &posY, &color)
-
 	if err != nil {
 		return "", 0, 0, 0, err
 	}
@@ -53,12 +52,11 @@ func parserPackage(input string) (name string, posX int, posY int, weight int, e
 
 func createPackage(input string, gameEnv *game.Game) error {
 	name, posX, posY, weight, err := parserPackage(input)
-
 	if err != nil {
 		return err
 	}
 
-	if err = gameEnv.CreateColis(name, posX, posY, weight); err != nil {
+	if err := gameEnv.CreateColis(name, posX, posY, weight); err != nil {
 		return err
 	}
 

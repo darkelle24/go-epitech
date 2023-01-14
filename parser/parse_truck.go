@@ -14,7 +14,6 @@ func parserTruck(input string) (name string, posX int, posY int, weightMax int, 
 	}
 
 	n, err := fmt.Sscanf(input, "%s %d %d %d %d", &name, &posX, &posY, &weightMax, &turn)
-
 	if err != nil {
 		return
 	}
@@ -36,12 +35,11 @@ func parserTruck(input string) (name string, posX int, posY int, weightMax int, 
 
 func createTruck(input string, gameEnv *game.Game) error {
 	name, posX, posY, weightMax, turn, err := parserTruck(input)
-
 	if err != nil {
 		return err
 	}
 
-	if err = gameEnv.CreateCamion(name, posX, posY, weightMax, turn); err != nil {
+	if err := gameEnv.CreateCamion(name, posX, posY, weightMax, turn); err != nil {
 		return err
 	}
 
