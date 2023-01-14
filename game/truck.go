@@ -59,16 +59,16 @@ func (truck *Camion) NextTurn() error {
 	if truck.turnCurrent > 0 {
 		truck.turnCurrent--
 		truck.status = "GONE"
-		if truck.turnCurrent == 0 {
-			truck.colisList = []*Colis{}
-			truck.weightCurrent = 0
-		}
 	}
 	switch truck.status {
 	case "WAITING":
 		PrintTruckWaiting(truck)
 	case "GONE":
 		PrintTruckDepart(truck)
+		if truck.turnCurrent == 0 {
+			truck.colisList = []*Colis{}
+			truck.weightCurrent = 0
+		}
 	default:
 		return errNoAction
 	}
