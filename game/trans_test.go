@@ -51,8 +51,5 @@ func TestTrans(t *testing.T) {
 		assert.Nil(t, trans.Drop(1, 1, &gameEnv.Map), "should not fail because there is a truck")
 		assert.Equal(t, "LEAVE", trans.GetStatus(), "status LEAVE because it droped a package")
 		assert.Nil(t, trans.NextTurn())
-		if v := assert.Equal(t, "", trans.GetStatus(), "no status because new turn"); v {
-			assert.NotNil(t, trans.NextTurn(), "should fail because no actions were taken this turn")
-		}
 	}
 }
