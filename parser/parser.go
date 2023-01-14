@@ -153,7 +153,7 @@ func Parser(gameEnv *game.Game) error {
 
 	// fmt.Println(file)
 
-	fileArray := strings.Split(file, "\n")
+	fileArray := strings.Split(strings.ReplaceAll(file, "\r\n", "\n"), "\n")
 
 	if err := orderParser(fileArray, gameEnv); err != nil {
 		return err
