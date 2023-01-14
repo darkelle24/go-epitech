@@ -136,6 +136,8 @@ var firstLineParseTests = []firstLineParseTest{
 	{"1 -1 1", true, 0, 0, 0},
 	{"1 1 -1", true, 0, 0, 0},
 	{"-1 1 1", true, 0, 0, 0},
+	{"1 1 1", true, 0, 0, 0},
+	{"1 1 20000000000", true, 0, 0, 0},
 
 	{"1 1 1", false, 1, 1, 1},
 	{"10 1 1", false, 10, 1, 1},
