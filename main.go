@@ -19,7 +19,8 @@ func main() {
 	defer handlePanics()
 	var gameEnv game.Game
 
-	if parser.Parser(&gameEnv) != nil {
+	if err := parser.Parser(&gameEnv); err != nil {
+		fmt.Println("😱", err)
 		return
 	}
 	orders := solver.SetupManager(&gameEnv)

@@ -13,7 +13,7 @@ import (
 func getPath() (string, error) {
 	arg_len := len(os.Args[0:])
 	if arg_len != 2 {
-		fmt.Println("wrong number of argument")
+		// fmt.Println("wrong number of argument")
 		return "", errors.New("wrong number of argument")
 	}
 
@@ -134,7 +134,7 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 	}
 
 	if len(gameEnv.Transps) == 0 || len(gameEnv.Packs) == 0 || len(gameEnv.Trucks) == 0 {
-		fmt.Println("need min 1 pallet truck, min 1 truck and min 1 package")
+		// fmt.Println("need min 1 pallet truck, min 1 truck and min 1 package")
 		return errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
 	}
 
