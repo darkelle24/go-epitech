@@ -1,0 +1,7 @@
+5 5 1000
+colis_a_livrer 2 1 green
+paquet 2 2 BLUE
+deadpool 0 3 yellow
+colère_DU_dragon 4 1 green
+transpalette_1 0 0
+camion_b 3 4 4000 5

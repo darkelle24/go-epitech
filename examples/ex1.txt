@@ -1,4 +1,4 @@
-5 5 10
+5 5 30
 colis__1 2 1 green
 colis__2 2 2 BLUE
 colis__3 0 3 yellow
