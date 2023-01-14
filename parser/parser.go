@@ -70,6 +70,10 @@ func firstLineParse(line string) (width int, height int, numberTurnSimulate int,
 		return 0, 0, 0, errors.New("the value can t be negative")
 	}
 
+	if numberTurnSimulate < 10 || 100000 < numberTurnSimulate {
+		return 0, 0, 0, errors.New("wrong number of turn")
+	}
+
 	return width, height, numberTurnSimulate, nil
 }
 
