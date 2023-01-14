@@ -128,7 +128,7 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 
 	for _, s := range fileArray {
 		if err := switchParser(&state, gameEnv, s); err != nil {
-			fmt.Println(err)
+			// fmt.Println(err)
 			return err
 		}
 	}
@@ -141,18 +141,18 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 	return nil
 }
 
-func Parser(gameEnv *game.Game) error {
+func Parser(gameEnv *game.Game) {
 
 	path, err := getPath()
 
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	file, err := readFile(path)
 
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	// fmt.Println(file)
@@ -160,8 +160,6 @@ func Parser(gameEnv *game.Game) error {
 	fileArray := strings.Split(strings.ReplaceAll(file, "\r\n", "\n"), "\n")
 
 	if err := orderParser(fileArray, gameEnv); err != nil {
-		return err
+		panic(err)
 	}
-
-	return nil
 }
