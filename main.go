@@ -4,9 +4,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/darkelle24/go-epitech/algo"
 	"github.com/darkelle24/go-epitech/game"
 	"github.com/darkelle24/go-epitech/parser"
+	"github.com/darkelle24/go-epitech/solver"
 )
 
 func handlePanics() {
@@ -22,11 +22,11 @@ func main() {
 	if parser.Parser(&gameEnv) != nil {
 		return
 	}
-	orders := algo.SetupManager(&gameEnv)
+	orders := solver.SetupManager(&gameEnv)
 
 	for !gameEnv.IsDone() {
-		orders = algo.UpdateManager(&gameEnv, orders)
-		_ = algo.UpdateTrucks(&gameEnv)
+		orders = solver.UpdateManager(&gameEnv, orders)
+		_ = solver.UpdateTrucks(&gameEnv)
 		gameEnv.NextTurn()
 	}
 	fmt.Println(gameEnv.EndStateCharacter())

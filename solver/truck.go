@@ -1,4 +1,4 @@
-package algo
+package solver
 
 import (
 	"github.com/darkelle24/go-epitech/game"

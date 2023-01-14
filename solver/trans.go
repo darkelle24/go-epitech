@@ -1,4 +1,4 @@
-package algo
+package solver
 
 import (
 	"math"
@@ -113,6 +113,40 @@ func wichTransAvailable(transps []*game.Transpalette, managers []*PackageManager
 	return nil
 }
 
+func moveTrans(trans *game.Transpalette, tool game.Tool, ground *[][]game.Floor) []Point {
+	newPoint := make([]Point, 0)
+	tx, ty := trans.GetPosition()
+	cx, cy := tool.GetPosition()
+	var nx, ny int
+
+	if math.Abs(float64(tx)-float64(cx)) != 0 {
+		if tx-cx > 0 {
+			nx = -1
+		} else {
+			nx = 1
+		}
+	}
+	if math.Abs(float64(ty)-float64(cy)) != 0 {
+		if ty-cy > 0 {
+			ny = -1
+		} else {
+			ny = 1
+		}
+	}
+	if nx != 0 && (*ground)[tx+nx][ty].Tool == nil {
+		_ = trans.Move(nx, 0, ground)
+	} else if ny != 0 && (*ground)[tx][ty+ny].Tool == nil {
+		_ = trans.Move(0, ny, ground)
+	} else {
+		if nx == 0 {
+			newPoint = append(newPoint, Point{X: 1, Y: 0}, Point{X: 0, Y: ny})
+		} else if ny == 0 {
+			newPoint = append(newPoint, Point{X: 0, Y: 1}, Point{X: nx, Y: 0})
+		}
+	}
+	return newPoint
+}
+
 func moveToBox(trans *game.Transpalette, pack *game.Colis, points []Point, ground *[][]game.Floor) []Point {
 	var toolTrans game.Tool = trans
 	newPoint := make([]Point, 0)
@@ -124,36 +158,8 @@ func moveToBox(trans *game.Transpalette, pack *game.Colis, points []Point, groun
 		_ = trans.Move(points[0].X, points[0].Y, ground)
 		return points[1:]
 	} else {
-		tx, ty := trans.GetPosition()
-		cx, cy := pack.GetPosition()
-		var nx, ny int
-		if math.Abs(float64(tx)-float64(cx)) != 0 {
-			if tx-cx > 0 {
-				nx = -1
-			} else {
-				nx = 1
-			}
-		}
-		if math.Abs(float64(ty)-float64(cy)) != 0 {
-			if ty-cy > 0 {
-				ny = -1
-			} else {
-				ny = 1
-			}
-		}
-		if nx != 0 && (*ground)[tx+nx][ty].Tool == nil {
-			_ = trans.Move(nx, 0, ground)
-		} else if ny != 0 && (*ground)[tx][ty+ny].Tool == nil {
-			_ = trans.Move(0, ny, ground)
-		} else {
-			if nx == 0 {
-				newPoint = append(newPoint, Point{X: 1, Y: 0})
-				newPoint = append(newPoint, Point{X: 0, Y: ny})
-			} else if ny == 0 {
-				newPoint = append(newPoint, Point{X: 0, Y: 1})
-				newPoint = append(newPoint, Point{X: nx, Y: 0})
-			}
-		}
+		var ctool game.Tool = pack
+		newPoint = moveTrans(trans, ctool, ground)
 	}
 	return newPoint
 }
@@ -172,37 +178,8 @@ func moveToTruck(trans *game.Transpalette, truck *game.Camion, points []Point, g
 		_ = trans.Move(points[0].X, points[0].Y, ground)
 		return points[1:]
 	} else {
-		tx, ty := trans.GetPosition()
-		cx, cy := truck.GetPosition()
-		var nx, ny int
-		if math.Abs(float64(tx)-float64(cx)) != 0 {
-			if tx-cx > 0 {
-				nx = -1
-			} else {
-				nx = 1
-			}
-		}
-		if math.Abs(float64(ty)-float64(cy)) != 0 {
-			if ty-cy > 0 {
-				ny = -1
-			} else {
-				ny = 1
-			}
-		}
-		if nx != 0 && (*ground)[tx+nx][ty].Tool == nil {
-			_ = trans.Move(nx, 0, ground)
-		} else if ny != 0 && (*ground)[tx][ty+ny].Tool == nil {
-			_ = trans.Move(0, ny, ground)
-		} else {
-			newPoint := make([]Point, 0)
-			if nx == 0 {
-				newPoint = append(newPoint, Point{X: 1, Y: 0})
-				newPoint = append(newPoint, Point{X: 0, Y: ny})
-			} else if ny == 0 {
-				newPoint = append(newPoint, Point{X: 0, Y: 1})
-				newPoint = append(newPoint, Point{X: nx, Y: 0})
-			}
-		}
+		var ctool game.Tool = truck
+		newPoint = moveTrans(trans, ctool, ground)
 	}
 	return newPoint
 }
