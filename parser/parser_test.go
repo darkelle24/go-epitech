@@ -43,6 +43,7 @@ type readFileTest struct {
 var readFileTests = []readFileTest{
 	{true, "./test.txt", "dab", false},
 	{true, "./test.txt", "dab\nqsdqs\n", false},
+	{true, "./test.txt", "dab\r\nqsdqs\r\n", false},
 	{false, "", "", true},
 }
 
