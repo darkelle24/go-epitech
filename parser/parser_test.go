@@ -1,3 +1,4 @@
+// Package parser implements utility for paser file and check error
 package parser
 
 import (

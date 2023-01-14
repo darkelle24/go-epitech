@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -10,7 +9,7 @@ import (
 
 func parserPalletTruck(input string) (name string, posX int, posY int, err error) {
 	if strings.Count(input, " ") != 2 {
-		return "", 0, 0, errors.New("wrong number of parameters for package")
+		return "", 0, 0, errWrongNumberOfParam
 	}
 
 	n, err := fmt.Sscanf(input, "%s %d %d", &name, &posX, &posY)
@@ -19,11 +18,11 @@ func parserPalletTruck(input string) (name string, posX int, posY int, err error
 	}
 
 	if n != 3 {
-		return "", 0, 0, errors.New("wrong number of parameters for package")
+		return "", 0, 0, errWrongNumberOfParam
 	}
 
 	if posX < 0 || posY < 0 {
-		return "", 0, 0, errors.New("the value can t be negative")
+		return "", 0, 0, errNegaValue
 	}
 
 	return
@@ -36,7 +35,7 @@ func createPalletTruck(input string, gameEnv *game.Game) error {
 	}
 
 	if err := gameEnv.CreateTranspallete(name, posX, posY); err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
 	return nil

@@ -10,10 +10,20 @@ import (
 	"github.com/darkelle24/go-epitech/game"
 )
 
+// Errors
+
+var errWrongNumberOfArg = errors.New("wrong number of argument")
+var errWrongNumberOfParam = errors.New("wrong number of parameters")
+var errNegaValue = errors.New("the value can t be negative")
+var errWrongNumberTurn = errors.New("wrong number of turn")
+var errFileErr = errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
+var errWeight = errors.New("weight max can't be lower than 100")
+var errColor = errors.New("problem with color")
+
 func getPath() (string, error) {
-	arg_len := len(os.Args[0:])
-	if arg_len != 2 {
-		return "", errors.New("wrong number of argument")
+	argLen := len(os.Args[0:])
+	if argLen != 2 {
+		return "", errWrongNumberOfArg
 	}
 
 	return os.Args[1], nil
@@ -22,8 +32,7 @@ func getPath() (string, error) {
 func readFile(path string) (string, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Println(err)
-		return "", err
+		return "", fmt.Errorf("%w", err)
 	}
 
 	str := string(data)
@@ -31,18 +40,20 @@ func readFile(path string) (string, error) {
 }
 
 func checkNumber(input string) (int, error) {
-	if i, err := strconv.ParseInt(input, 10, 64); err == nil {
+	i, err := strconv.ParseInt(input, 10, 64)
+
+	if err == nil {
 		return int(i), nil
-	} else {
-		return 0, err
 	}
+
+	return 0, fmt.Errorf("%w", err)
 }
 
 func firstLineParse(line string) (width int, height int, numberTurnSimulate int, err error) {
 	argument := strings.Split(line, " ")
 
 	if len(argument) != 3 {
-		return 0, 0, 0, errors.New("wrong number of parameters")
+		return 0, 0, 0, errWrongNumberOfParam
 	}
 
 	width, err = checkNumber(argument[0])
@@ -64,11 +75,11 @@ func firstLineParse(line string) (width int, height int, numberTurnSimulate int,
 	}
 
 	if numberTurnSimulate < 0 || height < 0 || width < 0 {
-		return 0, 0, 0, errors.New("the value can t be negative")
+		return 0, 0, 0, errNegaValue
 	}
 
 	if numberTurnSimulate < 10 || 100000 < numberTurnSimulate {
-		return 0, 0, 0, errors.New("wrong number of turn")
+		return 0, 0, 0, errWrongNumberTurn
 	}
 
 	return width, height, numberTurnSimulate, nil
@@ -92,7 +103,7 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 			*state++
 			return switchParser(state, gameEnv, s)
 		} else if len(list) != 4 {
-			return errors.New("wrong number of parameters")
+			return errWrongNumberOfParam
 		}
 		if err := createPackage(s, gameEnv); err != nil {
 			return err
@@ -103,7 +114,7 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 			*state++
 			return switchParser(state, gameEnv, s)
 		} else if len(list) != 3 {
-			return errors.New("wrong number of parameters")
+			return errWrongNumberOfParam
 		}
 		if err := createPalletTruck(s, gameEnv); err != nil {
 			return err
@@ -111,7 +122,7 @@ func switchParser(state *int, gameEnv *game.Game, s string) error {
 	case 4:
 		list := strings.Split(s, " ")
 		if len(list) != 5 {
-			return errors.New("wrong number of parameters")
+			return errWrongNumberOfParam
 		}
 		if err := createTruck(s, gameEnv); err != nil {
 			return err
@@ -130,12 +141,13 @@ func orderParser(fileArray []string, gameEnv *game.Game) error {
 	}
 
 	if len(gameEnv.Transps) == 0 || len(gameEnv.Packs) == 0 || len(gameEnv.Trucks) == 0 {
-		return errors.New("need min 1 pallet truck, min 1 truck and min 1 package")
+		return errFileErr
 	}
 
 	return nil
 }
 
+// Parser parse file and check for errors
 func Parser(gameEnv *game.Game) {
 	path, err := getPath()
 	if err != nil {
